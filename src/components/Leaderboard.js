@@ -6,7 +6,11 @@ function Leaderboard() {
     const [scores, setScores] = useState([]);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:5000/scores?game=game_1')
+        // Get the current date
+        const now = new Date();
+        // Format the date as "game_YYYY_MM_DD"
+        const gameParam = `game_${now.getFullYear()}_${String(now.getMonth() + 1).padStart(2, '0')}_${String(now.getDate()).padStart(2, '0')}`;
+        axios.get(`http://127.0.0.1:5000/scores?game=${gameParam}`)
             .then(response => {
                 // Convert object to array and sort
                 const sortedScores = Object.entries(response.data)

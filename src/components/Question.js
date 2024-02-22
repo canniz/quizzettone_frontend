@@ -2,16 +2,9 @@ import React, { useState } from 'react';
 import './Question.css'; // Ensure you have this import
 
 function Question({ question, onSubmit }) {
-    const [selectedOption, setSelectedOption] = useState("");
-
-    const handleOptionClick = (option) => {
-        setSelectedOption(option);
-    };
-
-    const handleSubmit = () => {
-        if (selectedOption) {
-            onSubmit(selectedOption);
-        }
+    const handleOptionClick = (option, index) => {
+        // Directly call onSubmit with the selected option
+        onSubmit(option, index); // Pass both option and index if needed
     };
 
     return (
@@ -21,13 +14,12 @@ function Question({ question, onSubmit }) {
                 {question.options.map((option, index) => (
                     <button
                         key={index}
-                        className={`option-button ${selectedOption === option ? "selected" : ""}`}
-                        onClick={() => handleOptionClick(option)}>
+                        className={`option-button`}
+                        onClick={() => onSubmit(option)}>
                         {option}
                     </button>
                 ))}
             </div>
-            <button className="submit-button" onClick={handleSubmit}>Confirm</button>
         </div>
     );
 }
