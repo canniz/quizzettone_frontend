@@ -44,7 +44,7 @@ function Quiz() {
         axios.post('http://127.0.0.1:5000/submit-answer', {
             username,
             question_id: currentQuestion.id,
-            selected_option_index: selectedOptionIndex
+            selected_option_index: selectedOptionIndex  // Send the index
         })
         .then(response => {
             const { correct } = response.data;
