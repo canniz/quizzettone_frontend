@@ -13,11 +13,12 @@ function Quiz() {
     const [questionsAnswered, setQuestionsAnswered] = useState(0); // Track the number of answered questions
     const [totalQuestions, setTotalQuestions] = useState(0); // Total number of questions
     const [quizCompleted, setQuizCompleted] = useState(false); // New state to track quiz completion
-
+    const API_HOST = process.env.REACT_APP_API_HOST;
 
     useEffect(() => {
         // Fetch the total number of questions on initial load
-        axios.get('http://127.0.0.1:5000/total-questions')
+        console.log(API_HOST)
+        axios.get(`${API_HOST}/total-questions`)
             .then(response => {
                 setTotalQuestions(response.data.total);
             })
@@ -29,7 +30,7 @@ function Quiz() {
     }, [hasEnteredUsername]);
 
     const fetchQuestion = () => {
-        axios.get(`http://127.0.0.1:5000/get-question?user=${username}`)
+        axios.get(`${API_HOST}/get-question?user=${username}`)
             .then(response => {
                 if (response.data.message === "No more questions") {
                     setQuizCompleted(true); // Set quiz completion to true
@@ -41,7 +42,7 @@ function Quiz() {
     };
 
     const handleSubmitAnswer = (selectedOptionIndex) => {
-        axios.post('http://127.0.0.1:5000/submit-answer', {
+        axios.post(`${API_HOST}/submit-answer`, {
             username,
             question_id: currentQuestion.id,
             selected_option_index: selectedOptionIndex  // Send the index

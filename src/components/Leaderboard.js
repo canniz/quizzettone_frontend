@@ -4,13 +4,13 @@ import './Leaderboard.css'; // Ensure this is still imported
 
 function Leaderboard() {
     const [scores, setScores] = useState([]);
-
+    const API_HOST = process.env.REACT_APP_API_HOST;
     useEffect(() => {
         // Get the current date
         const now = new Date();
         // Format the date as "game_YYYY_MM_DD"
         const gameParam = `game_${now.getFullYear()}_${String(now.getMonth() + 1).padStart(2, '0')}_${String(now.getDate()).padStart(2, '0')}`;
-        axios.get(`http://127.0.0.1:5000/scores?game=${gameParam}`)
+        axios.get(`${API_HOST}/scores?game=${gameParam}`)
             .then(response => {
                 // Convert object to array and sort
                 const sortedScores = Object.entries(response.data)
