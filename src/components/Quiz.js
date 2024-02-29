@@ -96,7 +96,7 @@ function Quiz() {
                     {currentQuestion && (
                         <>
                             <Question question={currentQuestion} onSubmit={handleSubmitAnswer} />
-                            <Timer duration={30} onTimeOut={fetchQuestion} />
+                            <Timer duration={60} onTimeOut={fetchQuestion} />
                         </>
                     )}
                     <Scoreboard score={score} />
