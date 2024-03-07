@@ -52,14 +52,14 @@ function Quiz() {
         })
         .then(response => {
             const { correct } = response.data;
-            if (correct) {
-                setScore(prevScore => prevScore + 10);
-            }
+            setScore(prevScore => {
+                // Add 10 for a correct answer, subtract 2.5 for an incorrect one
+                return correct ? prevScore + 10 : prevScore - 2.5;
+            });
             fetchQuestion(); // Fetch the next question
         })
         .catch(error => console.error('Error submitting answer', error));
     };
-
 
     const handleUsernameSubmit = (e) => {
         e.preventDefault();
