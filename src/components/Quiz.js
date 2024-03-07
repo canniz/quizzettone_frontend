@@ -10,7 +10,6 @@ function Quiz() {
     const [score, setScore] = useState(0);
     const [username, setUsername] = useState("");
     const [hasEnteredUsername, setHasEnteredUsername] = useState(false);
-    const [questionsAnswered, setQuestionsAnswered] = useState(0); // Track the number of answered questions
     const [totalQuestions, setTotalQuestions] = useState(0); // Total number of questions
     const [quizCompleted, setQuizCompleted] = useState(false); // New state to track quiz completion
     const API_HOST = process.env.REACT_APP_API_HOST;
@@ -28,6 +27,10 @@ function Quiz() {
             fetchQuestion();
         }
     }, [hasEnteredUsername]);
+
+    const handleTimeOut = () => {
+        setQuizCompleted(true);  // Set quiz completion to true when time is up
+    };
 
     const fetchQuestion = () => {
         axios.get(`${API_HOST}/get-question?user=${username}`)
@@ -96,7 +99,7 @@ function Quiz() {
                     {currentQuestion && (
                         <>
                             <Question question={currentQuestion} onSubmit={handleSubmitAnswer} />
-                            <Timer duration={60} onTimeOut={fetchQuestion} />
+                            <Timer duration={60} onTimeOut={handleTimeOut} />
                         </>
                     )}
                     <Scoreboard score={score} />
