@@ -14,6 +14,7 @@ function App() {
         <Routes> {/* Wrap Route components in Routes */}
           <Route path="/leaderboard" element={<Leaderboard />} />
           <Route path="/quiz" element={<Quiz />} />
+          <Route path="/" element={<Quiz />} />
         </Routes>
       </Router>
     </div>

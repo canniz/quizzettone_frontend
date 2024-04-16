@@ -16,13 +16,18 @@ function QuizNavbar() {
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>
-        <Navbar.Brand href="/Quiz">Quizzettone</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <NavLink 
-              to="/Leaderboard" 
-              onClick={(e) => handleReload(e, '/Leaderboard')}
+              to="/quiz" 
+              onClick={(e) => handleReload(e, '/quiz')}
+              className="me-3" // Bootstrap spacing class
+            >
+              Quizzettone
+            </NavLink>
+            <NavLink 
+              to="/leaderboard" 
+              onClick={(e) => handleReload(e, '/leaderboard')}
             >
               Leaderboard
             </NavLink>
