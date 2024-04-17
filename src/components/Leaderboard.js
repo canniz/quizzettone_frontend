@@ -21,7 +21,7 @@ function Leaderboard() {
     }, []);
 
     return (
-        <div className="leaderboard-container">
+        <main className="page">
             <h2>Leaderboard</h2>
             <ul className="leaderboard-list">
                 {scores.map(([username, userScores], index) => (
@@ -30,7 +30,7 @@ function Leaderboard() {
                     </li>
                 ))}
             </ul>
-        </div>
+        </main>
     );
 }
 
