@@ -9,7 +9,7 @@ function QuizNavbar() {
       event.preventDefault();
       window.location.reload();
     }
-  };
+  };aaaaa
 
   return (
     <nav className="navbar">
