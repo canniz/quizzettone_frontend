@@ -64,9 +64,6 @@ export default function MainPage() {
           ref={userRef}
           type="text"
           placeholder="Username"
-          onChange={() => {
-            setError(undefined);
-          }}
           className="default_input"
         />
         <button type="submit" className="default_btn">
