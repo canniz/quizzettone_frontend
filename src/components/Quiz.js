@@ -2,50 +2,56 @@ import React, { useState, useEffect } from "react";
 import Question from "./Question";
 import Timer from "./Timer";
 import Scoreboard from "./Scoreboard";
-import Leaderboard from "./Leaderboard"; // Import the Leaderboard component
 import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Quiz() {
+  const location = useLocation();
+  const username = location.state;
+  const navigate = useNavigate();
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [score, setScore] = useState(0);
-  const [username, setUsername] = useState("");
-  const [hasEnteredUsername, setHasEnteredUsername] = useState(false);
-  const [totalQuestions, setTotalQuestions] = useState(0); // Total number of questions
-  const [quizCompleted, setQuizCompleted] = useState(false); // New state to track quiz completion
   const API_HOST = process.env.REACT_APP_API_HOST;
 
   useEffect(() => {
-    // Fetch the total number of questions on initial load
-    console.log(API_HOST);
-    axios
-      .get(`${API_HOST}/total-questions`)
-      .then((response) => {
-        setTotalQuestions(response.data.total);
-      })
-      .catch((error) =>
-        console.error("Error fetching total number of questions", error)
-      );
-
-    if (hasEnteredUsername) {
-      fetchQuestion();
+    // check if user came from main page by submitting the form
+    // if not redirect to homepage
+    if (!username) {
+      navigate("/");
+      return;
     }
-  }, [hasEnteredUsername]);
 
+    const controller = new AbortController();
+    // fetch questions
+    fetchQuestion(controller.signal);
+    return () => {
+      // abort request on unmount
+      controller.abort();
+    };
+  }, [username]);
   const handleTimeOut = () => {
-    setQuizCompleted(true); // Set quiz completion to true when time is up
+    navigate("/leaderboard"); // Redirect user to "/leaderboard" when time is up
   };
 
-  const fetchQuestion = () => {
+  const fetchQuestion = (abortSignal) => {
     axios
-      .get(`${API_HOST}/get-question?user=${username}`)
+      .get(`${API_HOST}/get-question?user=${username}`, {
+        signal: abortSignal,
+      })
       .then((response) => {
         if (response.data.message === "No more questions") {
-          setQuizCompleted(true); // Set quiz completion to true
+          navigate("/leaderboard"); // redirect user to "/leaderboard"
         } else {
           setCurrentQuestion(response.data);
         }
       })
-      .catch((error) => console.error("Error fetching question", error));
+      .catch((error) => {
+        setCurrentQuestion({
+          options: ["test", "test"],
+          question: "Domanda?",
+        });
+        console.error("Error fetching question", error);
+      });
   };
 
   const handleSubmitAnswer = (selectedOptionIndex) => {
@@ -65,84 +71,28 @@ function Quiz() {
       })
       .catch((error) => console.error("Error submitting answer", error));
   };
-
-  const handleUsernameSubmit = (e) => {
-    e.preventDefault();
-    if (username) {
-      setHasEnteredUsername(true);
-    }
-  };
-
-  if (!hasEnteredUsername) {
-    return (
-      <div>
-        <h2>Regole der Quizzettone</h2>
-          <p>
-            1) Segui il{" "}
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://twitch.tv/erchiunque"
-            >
-              nostro canale Twitch
-            </a>
-          </p>
-          <p>
-            2) Seguici su{" "}
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href="https://www.instagram.com/erchiunque/"
-            >
-              Instagram!
-            </a>
-          </p>
-
-          <p>3) Scrivi un messaggio nella chat della live</p>
-          <p>
-            4) Utilizza come Username lo stesso nickname che hai su Twitch
-          </p>
-          <p>5) Sbrigati! Hai solo 60 secondi!</p>
-          <p>PREMIO: 5€ in Gift Card Amazon!</p>
-        <h2>In bocca al lupo!</h2>
-        <form onSubmit={handleUsernameSubmit}>
-          <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <button type="submit">Start Quiz</button>
-        </form>
-      </div>
-    );
-  }
-
-  if (quizCompleted) {
-    return <Leaderboard />; // Render the Leaderboard when the quiz is completed
-  }
+  useEffect(() => {
+    console.log(currentQuestion);
+  }, [currentQuestion]);
+  // location and/or username can be undefined/null if navigated directly or if navigation was triggered from nav link
+  // prevent render component when waiting for navigation to mainpage
+  if (!location) return null;
+  if (!username) return null;
 
   return (
-    <div>
+    <main className="page">
       <h2>Er Quizzettone</h2>
-      {hasEnteredUsername && (
+      <div>
+        <h3>Welcome, {username}</h3>
+      </div>
+      {currentQuestion && (
         <>
-          <div>
-            <h3>Welcome, {username}</h3>
-          </div>
-          {currentQuestion && (
-            <>
-              <Question
-                question={currentQuestion}
-                onSubmit={handleSubmitAnswer}
-              />
-              <Timer duration={60} onTimeOut={handleTimeOut} />
-            </>
-          )}
-          <Scoreboard score={score} />
+          <Question question={currentQuestion} onSubmit={handleSubmitAnswer} />
+          <Timer duration={60} onTimeOut={handleTimeOut} />
         </>
       )}
-    </div>
+      <Scoreboard score={score} />
+    </main>
   );
 }
 
