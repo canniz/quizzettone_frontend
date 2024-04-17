@@ -14,7 +14,7 @@
     background-color: #f0f0f0;
     border: 1px solid #ddd;
     padding: 10px 20px;
-    margin: 5px 0;
+    margin: 12px 0;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     transition: background-color 0.3s, box-shadow 0.3s;
@@ -23,4 +23,27 @@
 .leaderboard-item:hover {
     background-color: #e0e0e0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.refresh_btn {
+    margin: 1rem;
+    width: 40px;
+    height: 40px;
+    /* Additional styles can be added below to enhance the button's appearance */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-color: black;
+    border-width: 1px;
+    background-color: #ffffff; /* Bootstrap blue for example */
+    color: rgb(0, 0, 0);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.refresh_btn:hover {
+    background-color: #464646; /* Darker blue on hover */
+    color:white;
+    border: none;
 }
