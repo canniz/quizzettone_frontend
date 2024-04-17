@@ -14,7 +14,7 @@ function Quiz() {
   const API_HOST = process.env.REACT_APP_API_HOST;
 
   useEffect(() => {
-    // check if user came from main page by submitting the form
+    // Check if user came from main page by submitting the form
     // if not redirect to homepage
     if (!username) {
       navigate("/");
@@ -40,16 +40,12 @@ function Quiz() {
       })
       .then((response) => {
         if (response.data.message === "No more questions") {
-          navigate("/leaderboard"); // redirect user to "/leaderboard"
+          navigate("/leaderboard"); // Redirect user to "/leaderboard"
         } else {
           setCurrentQuestion(response.data);
         }
       })
       .catch((error) => {
-        setCurrentQuestion({
-          options: ["test", "test"],
-          question: "Domanda?",
-        });
         console.error("Error fetching question", error);
       });
   };
@@ -71,9 +67,7 @@ function Quiz() {
       })
       .catch((error) => console.error("Error submitting answer", error));
   };
-  useEffect(() => {
-    console.log(currentQuestion);
-  }, [currentQuestion]);
+
   // location and/or username can be undefined/null if navigated directly or if navigation was triggered from nav link
   // prevent render component when waiting for navigation to mainpage
   if (!location) return null;
