@@ -1,9 +1,8 @@
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { TwitchIcon } from "../icons/TwitchIcon";
 import { InstagramIcon } from "../icons/InstagramIcon";
+import { TwitchIcon } from "../icons/TwitchIcon";
 export default function MainPage() {
-  const [error, setError] = useState(undefined);
   const navigate = useNavigate();
   const userRef = useRef(null);
   const handleUsernameSubmit = (e) => {
@@ -70,8 +69,9 @@ export default function MainPage() {
           }}
           className="default_input"
         />
-        {error && <div>{error}</div>}
-        <button type="submit" className="default_btn">Start Quiz</button>
+        <button type="submit" className="default_btn">
+          Start Quiz
+        </button>
       </form>
     </main>
   );

@@ -16,6 +16,7 @@ body {
   font-size: 16px;
   width: 100vw;
   overflow: hidden;
+  overflow-y: auto;
 }
 a {
   color: var(--link-color);
